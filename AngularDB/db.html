@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+  <body>
+
+<div ng-app="myApp" ng-controller="formCtrl">
+  <form>
+    First Name: <input type="text" ng-model="firstname">
+  </form>
+</div>
+  
+  <div ng-app="formExample" ng-controller="ExampleController">
+     <form>
+<button ng-click = "update(a)">Reset</button>
+    </form>
+  </div>
+  <script>
+      angular.module('formExample', [])
+      .controller('ExampleController', ['$scope', '$http', function($scope, $http) {
+        $scope.master = {};
+        $scope.update = function(user) {
+          console.log("DD");
+          if ($scope.form.$valid) {
+            $scope.master = angular.copy(user);
+            $http.post('http://305db-idm4smb32469.codeanyapp.com:3300/post', $scope.master
+             ).success(function(data, status, headers, config) {
+              alert("Success!")
+             }).error(function(data, status, headers, config) {
+               alert("Error");
+            });
+           }
+         };
+        $scope.reset = function() {
+         $scope.user = angular.copy($scope.master);
+        };
+        $scope.reset();
+      }]);
+</script>
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+    $scope.firstname = "John";
+});
+</script>
+
+    <div ng-app="myApp">
+      <p><a href="#/">Main</a></p>
+
+<a href="#red">Red</a>
+<a href="#green">Green</a>
+<a href="#blue">Blue</a>
+
+<div ng-view></div>
+
+<script>
+var app = angular.module("myApp", ["ngRoute"]);
+app.config(function($routeProvider) {
+    $routeProvider
+    .when("/", {
+        templateUrl : "main.htm"
+    })
+    .when("/red", {
+        templateUrl : "red.htm"
+    })
+    .when("/green", {
+        templateUrl : "green.htm"
+    })
+    .when("/blue", {
+        templateUrl : "blue.htm"
+    });
+});
+</script>
+    </div>
+
+
+</body>
+</html>
+
